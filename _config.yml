@@ -116,7 +116,7 @@ disqus:
 #################################### global configure #######################################
 
 username: jellyr
-baseurl: jellyr.github.io/
+baseurl: /
 markdown: redcarpet
 safe: false
 highlighter: pygments
