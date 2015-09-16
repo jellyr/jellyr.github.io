@@ -94,7 +94,7 @@ author:
 
 #评论信息
 disqus:
-  config: true
+  config: false
   id: piznblog
 
 duoshuo:
