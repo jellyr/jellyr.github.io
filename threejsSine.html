@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shading #1</title>
+    <style>canvas { width: 100%; height: 100% ;}</style>
+    <style>
+        body {
+            margin: 0px;
+        }
+    </style>
+</head>
+<body>  
+	
+	
+	
+    <script src="js/r71/three.js"></script>
+ 		<script src="js/Stats.js"></script>
+
+
+
+
+
+    <script id="vs" type="x-shader/x-vertex">  
+			  varying vec2 vUv; 
+        void main()
+        {
+					vUv = uv;
+					vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
+    			gl_Position = projectionMatrix * mvPosition;
+            //gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+        }           
+    </script>
+
+    <script id="fs" type="x-shader/x-fragment">
+        uniform float time;
+        uniform vec2 resolution;
+				varying vec2 vUv;  
+				uniform float iGlobalTime;
+
+        void main()
+        {    
+
+					  float normalizedX = (gl_FragCoord.x - 320.0)/25.0;
+						float normalizedY = (gl_FragCoord.y - 440.0)/25.0;
+						
+						if(   (sin(normalizedX+iGlobalTime*4.0)   )> normalizedY/2.0-0.10  && //0.10 表示线条 * 25后的宽度         2.0 表示y轴拉升多少
+				        (sin(normalizedX+iGlobalTime*4.0)  )< normalizedY/2.0+0.10 
+						    )
+						    {
+						    	gl_FragColor = vec4(abs(sin(normalizedX)), abs(sin(normalizedY)), abs(sin(iGlobalTime)), 1.0);
+						    }
+        }
+
+    </script>
+
+    <script type="text/javascript">
+
+var  stats;
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        var renderer = new THREE.WebGLRenderer({ antialias: true});
+
+        var startTime = Date.now();
+
+      // THREE.ImageUtils.crossOrigin = 'anonymous';
+
+	var tuniform = {
+        iGlobalTime:    { type: 'f', value: 0.8 },
+     		resolution_width:    { type: 'f', value: 100 },
+     		resolution_height:    { type: 'f', value: 100 }
+       
+
+
+    };
+	 
+		 tuniform.resolution_height.value =  window.innerHeight;
+		 tuniform.resolution_width.value =  window.innerWidth;
+			var mat = new THREE.ShaderMaterial({
+       			 uniforms: tuniform,
+			 vertexShader: document.getElementById( 'vs' ).textContent,
+			 fragmentShader: document.getElementById( 'fs' ).textContent ,      
+          		 side:THREE.DoubleSide
+
+		});
+		
+
+		var tobject = new THREE.Mesh( new THREE.PlaneBufferGeometry (6, 20 ,32, 32), mat);
+			
+		 scene.add( tobject );
+
+        camera.position.z = 0.40;
+       
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+
+				document.body.appendChild( stats.domElement );
+			animate();
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+			
+        function render() {
+		    	clock = new THREE.Clock();
+		    	var iii=clock.getDelta;
+		  	//  tuniform.iGlobalTime.value += clock.getDelta;
+          tuniform.iGlobalTime.value = (Date.now() - startTime)/1000; 
+          // tuniform.
+          // uniforms.time.value = (Date.now() - startTime)/1000;        
+          renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
