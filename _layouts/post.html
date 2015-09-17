@@ -11,6 +11,7 @@ comment: true
         <p class="main-article-meta"><time pubdate="{{ rpost.date | date_to_utc | date: '%Y-%m-%d' }}">{{ page.date | date_to_utc | date: "%Y-%m-%d" }}</time></p>
         <div class="main-article-contant">
             {{ content }}
+            <iframe src="http://jellyr.github.io/{{ page.date | date_to_utc | date: "%Y-%m-%d" }}.html" width="800" height="800" >
         </div>
     </div>
 </article>
@@ -25,7 +26,7 @@ comment: true
     </div>
 </nav>
 >
-<iframe src="http://jellyr.github.io/{{ page.date | date_to_utc | date: "%Y-%m-%d" }}.html" width="800" height="800" >
+
 <div class="comment">
     {% if site.disqus.config %}
         <div class="comment-cnt">
