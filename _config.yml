@@ -96,9 +96,9 @@ author:
 
 #评论信息
 disqus:
-  config: yes
-  id: sciplearn
+  config: true
+  id: piznblog
 
 duoshuo:
-  config: yes
+  config: true
   id: zhanxin
