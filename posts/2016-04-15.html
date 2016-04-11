@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.5</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.5
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+
+
+Exercise 1.6. Alyssa P. Hacker doesn't see why if needs to be provided as a special form. ``Why
+can't I just define it as an ordinary procedure in terms of cond?'' she asks. Alyssa's friend Eva Lu
+Ator claims this can indeed be done, and she defines a new version of if:
+(define (new-if predicate then-clause else-clause)
+(cond (predicate then-clause)
+(else else-clause)))
+Eva demonstrates the program for Alyssa:
+(new-if (= 2 3) 0 5)
+5
+(new-if (= 1 1) 0 5)
+0
+Delighted, Alyssa uses new-if to rewrite the square-root program:
+
+(define (sqrt-iter guess x)
+(new-if (good-enough? guess x)
+guess
+(sqrt-iter (improve guess x)
+x)))
+What happens when Alyssa attempts to use this to compute square roots? Explain.
+
+answer: 
+1.Normal Order 
+  In this order, it will fully expand  and won't be evaluate until it is necessary. So it won't evaluate the (sqrt-iter (improve guess x) x)) which is the new-if's argument. , it will get the right answer.
+  I have tested it in Racket with "Lazy Racket" language, and it works as expect.
+
+
+2.Applicative Order
+  In this order, the interpreter will evaluate sqrt-iter->new-if, the (sqrt-iter (improve guess x) x)) will evaluate, and we again call sqrt-iter->new-if and the (sqrt-iter (improve guess x) x)) will evaluate again , so it is a infinite loop.
+
+</font>  
+</pre>
+
+</body>
+
+
+</html>
