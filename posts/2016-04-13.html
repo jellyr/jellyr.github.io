@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.4</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.4
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+
+CL-USER> (defun a-plus-abs-b (a b)
+	   (funcall (if (> b 0) #'+ 
+			        #'-)
+		    a
+		    b))
+A-PLUS-ABS-B
+CL-USER> (a-plus-abs-b 2 -3)
+5
+CL-USER> (a-plus-abs-b 2 3)
+5
+CL-USER> (a-plus-abs-b -2 3)
+1
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+
+</body>
+
+
+</html>
