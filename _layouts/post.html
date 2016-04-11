@@ -11,9 +11,9 @@ comment: true
         <p class="main-article-meta"><time pubdate="{{ rpost.date | date_to_utc | date: '%Y-%m-%d' }}">{{ page.date | date_to_utc | date: "%Y-%m-%d" }}</time></p>
         <div class="main-article-contant">
             {{ content }}
-            {% if page.title == "使用webgl画sin函数!如下图 ." %}
+           
             <iframe src="http://jellyr.github.io/{{ page.date | date_to_utc | date: "%Y-%m-%d" }}.html" width="800" height="400" >
-            {% endif %}
+          
             
         </div>
     </div>
