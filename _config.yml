@@ -39,7 +39,7 @@ timezone:      null
 
 
 #站点基础配置
-title: something
+title: lisp
 subTitle: 朱飞的博客
 #Just another Jekyll blog.
 description: 朱飞的博客
@@ -96,9 +96,9 @@ author:
 
 #评论信息
 disqus:
-  config: false
-  id: piznblog
+  config: yes
+  id: sciplearn
 
 duoshuo:
-  config: false
+  config: yes
   id: zhanxin
