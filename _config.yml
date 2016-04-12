@@ -31,12 +31,12 @@ detach:       false
 port:         4000
 host:         127.0.0.1
 baseurl:      "" # does not include hostname
- 
+
 # Outputting
 permalink:     date
 paginate_path: /page:num
 timezone:      null
- 
+
 
 #站点基础配置
 title: lisp
