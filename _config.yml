@@ -36,7 +36,7 @@ baseurl:      "" # does not include hostname
 permalink:     date
 paginate_path: /page:num
 timezone:      null
-
+ 
 
 #站点基础配置
 title: lisp
