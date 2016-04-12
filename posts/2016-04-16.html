@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.7</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.7
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+
+Exercise 1.7. The good-enough? test used in computing square roots will not be very effective
+for finding the square roots of very small numbers. Also, in real computers, arithmetic operations
+are almost always performed with limited precision. This makes our test inadequate for very large
+numbers. Explain these statements, with examples showing how the test fails for small and large
+numbers. An alternative strategy for implementing good-enough? is to watch how guess
+changes from one iteration to the next and to stop when the change is a very small fraction of the
+guess. Design a square-root procedure that uses this kind of end test. Does this work better for small
+and large numbers?
+
+
+
+(defun average(x y)
+  (/ (+ x y) 2))
+
+(defun improve (guess x)
+  (average (/ x guess)
+	   guess))
+
+(defun squre(x)
+  (* x x))
+
+(defun good-enough? (guess x)
+    (< (abs (- (squre guess)
+	        x))
+     0.0000001))
+
+(defun sqrt-iter (guess x)
+  (if (good-enough? guess x)
+      guess
+      (sqrt-iter (improve guess x)
+		 x)))
+
+(defun mysqrt(x)
+  (sqrt-iter 1.0 x))
+
+
+
+
+(defun good-enough_ex(guess x)
+  (< (abs (/ (- guess (improve guess x))
+	     guess
+	     ))
+     0.0000001))
+
+
+(defun sqrt-iter-ex(guess x)
+  (if (good-enough_ex guess x)
+      guess
+      (sqrt-iter-ex (improve guess x)
+		    x)))
+
+(defun mysqrt_ex(x)
+  (sqrt-iter-ex 1.0 x))
+
+
+CL-USER> (mysqrt_ex 0.0000000009)
+3.e-5
+CL-USER> (mysqrt 0.0000000009)
+2.453682e-4
+CL-USER> 
+CL-USER> (mysqrt_ex 99999999999999999999999999999999999999)
+1.e19
+CL-USER> (mysqrt    99999999999999999999999999999999999999)
+; Evaluation aborted on #<FLOATING-POINT-OVERFLOW {23EA75A9}>.
+CL-USER> 
+
+1,when the number is too small, in good-enough function, the squre function will make a more  inaccurate result, because the float encode method in computer science is inaccurate .
+  
+
+2,when the number is too large, in good-enough function, the squre function will make a much larer number, which the computer can not store and cause overflow. but the  good-enough_ex function 
+  make a small number.
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
