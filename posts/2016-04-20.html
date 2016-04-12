@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip Fibonacci</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP Fibonacci in tree-recursive and linear iteration version.
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+
+ tree-recursive
+(defun fib(n)
+  (cond ( (= n 0) 0)
+	( (= n 1) 1)
+	( (+ (fib (- n 1))
+	       (fib (- n 2))))))
+
+
+
+linear iteration
+(defun fib_(n)
+  (defun fib-iter (pre nxt index)
+    (if (= index n)
+	nxt
+	(fib-iter  nxt
+		   (+ pre nxt)
+		   (+ index 1))))
+  (fib-iter 0 1 1))
+
+    
+CL-USER> (fib_ 5)
+5
+CL-USER> (fib_ 6)
+8
+CL-USER> (fib_ 10)
+55
+CL-USER> (fib 10)
+55
+
+</font>  
+</pre>
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+</body>
+
+
+</html>
