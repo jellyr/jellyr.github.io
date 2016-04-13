@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.16</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.16
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+1.2.4 Exponentiation
+Consider the problem of computing the exponential of a given number. We would like a procedure
+that takes as arguments a base b and a positive integer exponent n and computes bn. One way to do
+this is via the recursive definition
+b^n =  b * b^(n - 1)
+b^0 = 1
+which translates readily into the procedure
+(define (expt b n)
+(if (= n 0)
+1
+(* b (expt b (- n 1)))))
+This is a linear recursive process, which requires  n steps and  n space. Just as with
+factorial, we can readily formulate an equivalent linear iteration:
+(define (expt b n)
+(expt-iter b n 1))
+(define (expt-iter b counter product)
+(if (= counter 0)
+product
+(expt-iter b
+(- counter 1)
+(* b product))))
+This version requires (n) steps and (1) space.
+We can compute exponentials in fewer steps by using successive squaring. For instance, rather than
+computing b8 as
+b *( b *( b *( b *( b *( b *( b *( b))))))
+we can compute it using three multiplications:
+b2 = b * b
+b4 = b2 * b2
+b8 = b4 * b4
+49
+This method works fine for exponents that are powers of 2. We can also take advantage of
+successive squaring in computing exponentials in general if we use the rule
+b^n=(b^(b/2))^2 if n is even
+b^n=  b * b^(n - 1) if n is odd
+We can express this method as a procedure:
+(define (fast-expt b n)
+(cond ((= n 0) 1)
+((even? n) (square (fast-expt b (/ n 2))))
+(else (* b (fast-expt b (- n 1))))))
+where the predicate to test whether an integer is even is defined in terms of the primitive procedure
+remainder by
+(define (even? n)
+(= (remainder n 2) 0))
+The process evolved by fast-expt grows logarithmically with n in both space and number of
+steps. To see this, observe that computing b2n using fast-expt requires only one more
+multiplication than computing bn. The size of the exponent we can compute therefore doubles
+(approximately) with every new multiplication we are allowed. Thus, the number of multiplications
+required for an exponent of n grows about as fast as the logarithm of n to the base 2. The process
+has  log n growth.37
+The difference between  log n growth and  n growth becomes striking as n becomes
+large. For example, fast-expt for n = 1000 requires only 14 multiplications.38 It is also possible
+to use the idea of successive squaring to devise an iterative algorithm that computes exponentials
+with a logarithmic number of steps (see exercise 1.16), although, as is often the case with iterative
+algorithms, this is not written down so straightforwardly as the recursive algorithm.39
+
+
+Exercise 1.16. Design a procedure that evolves an iterative exponentiation process that uses
+successive squaring and uses a logarithmic number of steps, as does fast-expt. (Hint: Using the
+observation that (bn/2)2 = (b2)n/2, keep, along with the exponent n and the base b, an additional state
+variable a, and define the state transformation in such a way that the product a bn is unchanged
+from state to state. At the beginning of the process a is taken to be 1, and the answer is given by the
+value of a at the end of the process. In general, the technique of defining an invariant quantity that
+remains unchanged from state to state is a powerful way to think about the design of iterative
+algorithms.)
+
+here is all the lisp program describe in the above text and the exercise 1.16.
+
+
+
+
+;recursive
+
+(defun myexpt_recursive(b n)
+  ( if ( = n 0) 1
+       (* b
+	  (expt b (- n 1)))))
+
+
+
+
+
+
+;linear recursive
+(defun myexpt_linear(b n)
+ (defun expt-iter(product count)
+  ( if(= count n)
+      product
+      (expt-iter (* b product) (+ count 1))))
+  (expt-iter 1 0))
+
+
+
+
+;b^n = (b^(n/2))^2  n=>even       b^n = b * b^(n-1)  n=>odd
+
+
+(defun squre(x)
+  (* x x))
+
+(defun myexpt-recursive-ex(b n)
+  ( cond( (= n 0) 1)
+        ( (even? n)  (squre (myexpt-recursive-ex b (/ n 2))))
+	( (* b (myexpt-recursive-ex b (- n 1))))))11111
+
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+
+
+
+;exercise 1.16
+;b^n = (b^2)^(n/2)
+
+(defun myexpt-linear-ex(b n)
+  (defun expt-iter(product count)
+    (cond((= count 0) product)
+	 ( (even? count)  (expt-iter (squre product)  (/ count 2)))
+
+	 ( (expt-iter (* product b) (- count 1)))))
+  (expt-iter 1 n))
+
+
+
+CL-USER> (myexpt-linear-ex 2 3)
+8
+CL-USER> (myexpt-linear-ex 2 5)
+32
+CL-USER> (myexpt-linear-ex 3 3)
+27
+
+
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
