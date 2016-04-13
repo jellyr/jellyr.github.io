@@ -53,12 +53,10 @@ nav:
     url: /index.html
   - text: 文章归档
     url: /archives.html
-  - text: 作品
-    url: /works.html
   - text: 联系我
     url: /contactmail.html
   - text: 博客源代码
-    url: https://github.com/pizn/pizn.github.com
+    url: https://github.com/jellyr/jellyr.github.io
 
 #theme config
 themes: /themes/violet
