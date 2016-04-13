@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip Counting change</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP Counting change.
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+(defun count-change(amount)
+  (cc amount 5 0))
+
+(defun cc(amount kinds-of-coins callDepth)
+  (progn (format t "~%cc( ~d ~d ~d)" amount kinds-of-coins callDepth)
+	 (cond ( (= amount 0) (progn (format t "~%change success ") 1))
+	       ( (or (< amount 0)
+		     (= kinds-of-coins 0)) 0)
+	       ( (+ (cc amount
+			(- kinds-of-coins 1)
+			(+ callDepth 1))
+		    (cc (- amount
+			   (first-denomination kinds-of-coins))
+			kinds-of-coins
+			(+ callDepth 1)	)))))) 
+
+
+(defun first-denomination (kinds-of-coins)
+  (cond ( (= kinds-of-coins 1) 1)
+	( (= kinds-of-coins 2) 5)
+	( (= kinds-of-coins 3) 10)
+	( (= kinds-of-coins 4) 25)
+	( (= kinds-of-coins 5) 50)))
+
+
+CL-USER> (count-change 10)
+cc( 10 5 0)
+cc( 10 4 1)
+cc( 10 3 2)
+cc( 10 2 3)
+cc( 10 1 4)
+cc( 10 0 5)
+cc( 9 1 5)
+cc( 9 0 6)
+cc( 8 1 6)
+cc( 8 0 7)
+cc( 7 1 7)
+cc( 7 0 8)
+cc( 6 1 8)
+cc( 6 0 9)
+cc( 5 1 9)
+cc( 5 0 10)
+cc( 4 1 10)
+cc( 4 0 11)
+cc( 3 1 11)
+cc( 3 0 12)
+cc( 2 1 12)
+cc( 2 0 13)
+cc( 1 1 13)
+cc( 1 0 14)
+cc( 0 1 14)
+change success 
+cc( 5 2 4)
+cc( 5 1 5)
+cc( 5 0 6)
+cc( 4 1 6)
+cc( 4 0 7)
+cc( 3 1 7)
+cc( 3 0 8)
+cc( 2 1 8)
+cc( 2 0 9)
+cc( 1 1 9)
+cc( 1 0 10)
+cc( 0 1 10)
+change success 
+cc( 0 2 5)
+change success 
+cc( 0 3 3)
+change success 
+cc( -15 4 2)
+cc( -40 5 1)
+4
+
+</font>  
+</pre>
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+</body>
+
+
+</html>
