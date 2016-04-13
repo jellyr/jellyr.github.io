@@ -49,13 +49,13 @@ feed: /atom.xml
 
 #菜单配置
 nav:
-  - text: 首页
+  - text: Main
     url: /index.html
-  - text: 文章归档
+  - text: Articles
     url: /archives.html
-  - text: 联系我
+  - text: Mail
     url: /contactmail.html
-  - text: 博客源代码
+  - text: Blog Source
     url: https://github.com/jellyr/jellyr.github.io
 
 #theme config
