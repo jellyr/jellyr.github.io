@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.11</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.11
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+A function f is defined by the rule that f(n) = n if n<3 and f(n) = f(n - 1) + 2f(n - 2) +
+3f(n - 3) if n> 3. Write a procedure that computes f by means of a recursive process. Write a
+procedure that computes f by means of an iterative process.
+
+
+
+(defun f(n)
+  (cond ( (< n 3) n)
+	( (+ (f (- n 1))
+	     (* (f (- n 2)) 2)
+	     (* (f (- n 3)) 3)))))
+
+
+
+
+
+
+
+
+(defun g(n)
+  (defun iter-g(a b c count)
+    ( if (= count n) c
+	 (iter-g b
+		 c
+		 (+ c
+			(* 2 b)
+			(* 3 a))
+		 (+ count 1))))
+  (if (< n 3) n
+      (iter-g 0 1 2 2)))
+		 
+    
+CL-USER> (f 0)
+0
+CL-USER> (f 1)
+1
+CL-USER> (f 2)
+2
+CL-USER> (f 3)
+4
+CL-USER> (f 4)
+11
+CL-USER> (f 5)
+25
+CL-USER> (f 6)
+59
+
+
+CL-USER> (g 0)
+0
+CL-USER> (g 1)
+1
+CL-USER> (g 2)
+2
+CL-USER> (g 3)
+4
+CL-USER> (g 4)
+11
+CL-USER> (g 5)
+25
+CL-USER> (g 6)
+59
+
+
+
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
