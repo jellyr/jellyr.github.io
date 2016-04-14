@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.19</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.19
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+Exercise 1.19.
+(defun squre(x)
+  (* x x))
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+
+(defun doublef(x)
+  (+ x x))
+
+
+(defun half(x)
+  (/ x 2))
+
+
+(defun fib(n)
+  (fib-iter 1 0 0 1 n))
+
+(defun fib-iter(a b p q count)
+  (cond ( (= count 0) b)
+	( (even? count) (fib-iter a
+				  b
+				  (+ (* p p) (* q q))
+				  (+ (* 2 p q) (* q q))
+				  (/ count 2)))
+	( (fib-iter (+ (* b q) (* a q) (* a p))
+		    (+ (* b p) (* a q))
+		    p
+		    q
+		    (- count 1)))))
+
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
