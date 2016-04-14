@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.18</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.18
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+(defun squre(x)
+  (* x x))
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+
+(defun doublef(x)
+  (+ x x))
+
+
+(defun half(x)
+  (/ x 2))
+
+
+
+
+;ex1.18
+;a*b
+;1, b=0                     temp
+;2, b is even               (iter product*2  b/2 temp)
+;3, b is odd                (iter product  b-1 temp+product) 
+;					
+
+
+(defun multiply-iterative(a b)
+  (defun multiply-iter(product count temp)
+    (progn (format t "~% ~d ~d ~d" product count temp )
+    (cond ( (= count 0) temp)
+	  ( (even?  count)   (multiply-iter (* 2 product)
+					    (/ count 2)
+					    temp))
+	  ( (multiply-iter product
+			   (- count 1)
+			   (+ temp product)))  )))
+  (multiply-iter a b 0))
+
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>

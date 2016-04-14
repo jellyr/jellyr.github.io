@@ -127,8 +127,11 @@ here is all the lisp program describe in the above text and the exercise 1.16.
 
 
 
-;exercise 1.16
-;b^n = (b^2)^(n/2)
+;exercise 1.16  b^n
+
+;n = 0           product
+;n is even       (expt-iter  product^2  n/2)
+;n is odd        (expt-iter  product*b  n-1) 
 
 (defun myexpt-linear-ex(b n)
   (defun expt-iter(product count)

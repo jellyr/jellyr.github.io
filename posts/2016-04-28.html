@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.17</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.17
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+	
+(defun squre(x)
+ (* x x))
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+
+(defun doublef(x)
+  (+ x x))
+
+
+(defun half(x)
+  (/ x 2))
+
+
+
+;ex1.17
+;a*b
+;1, b is 0         0
+;2, b is even      (2a)*(b/2)
+;3, b is odd       a+(a*(b-1))
+
+(defun multiply-recursive(a b)
+  (cond ( (= b 0)  0)
+	( (even? b)  (multiply (doublef a)
+			       (half b)))
+	( (+ a
+	     (multiply a
+		       (- b 1))))))
+
+
+
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
