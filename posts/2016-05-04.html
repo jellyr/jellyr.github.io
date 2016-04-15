@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.22</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.22
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+	(defun squre(x)
+  (* x x))
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+
+(defun doublef(x)
+  (+ x x))
+
+
+(defun half(x)
+  (/ x 2))
+
+
+
+(defun smallest-divisor (n)
+  (find-divisor n 2))
+
+(defun next (x)
+  ( if(= x 2) 
+      3
+     (+ x 2)))
+
+(defun find-divisor(n test-divisor)
+  (cond ((> (squre test-divisor) n) n )
+	(( divides? test-divisor n) test-divisor)
+	( (find-divisor n (next test-divisor)))))
+
+
+(defun divides? (a b)
+  (= (mod b a) 0))
+
+
+(defun prime? (n)
+    (= n (smallest-divisor n)))
+
+
+
+
+
+(defun  expmod (base exp m)
+  (cond ((= exp 0) 1)
+	((even? exp)  (mod (squre (expmod base (/ exp 2) m))
+			   m))
+	( (mod (* base (expmod base (- exp 1) m))
+	       m))))
+
+
+(defun fermat-test(n)
+  (defun try-it (a)
+      (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
+
+
+(defun fast-prime? (n times)
+  (cond ( (= times 0) t)
+	( (fermat-test n) (fast-prime? n (- times 1)))
+	( nil)))
+
+
+(defun prime-ex(n)
+  (fast-prime? n 10))
+
+
+(defun search-for-primes (start  end )
+  ( if(even? start)
+      (search-for-primes (+ start 1) end)
+      (cond ( (< start end) (timed-prime-test start)
+	      (search-for-primes (+ start 2) end)))))
+
+
+
+(defun timed-prime-test(n)
+   (start-prime-test n (get-internal-real-time)))
+
+(defun start-prime-test(n start-time)
+  (cond ( (prime? n) (report-prime n (- (get-internal-real-time) start-time)))))
+
+
+(defun report-prime (n elapsed-time)
+  (format t "~%~d***~d millisecond" n  elapsed-time))
+
+
+(defun search-primes-under170 (start)
+  (search-for-primes start (+ start 170)))
+
+
+
+
+CL-USER 56 >  (search-primes-under170 (expt 10 10))
+
+10000000019***31 millisecond
+10000000033***27 millisecond
+10000000061***27 millisecond
+10000000069***16 millisecond
+10000000097***17 millisecond
+10000000103***19 millisecond
+10000000121***17 millisecond
+10000000141***16 millisecond
+10000000147***17 millisecond
+NIL
+
+CL-USER 57 >  (search-primes-under170 (expt 10 11))
+
+100000000003***93 millisecond
+100000000019***56 millisecond
+100000000057***59 millisecond
+100000000063***58 millisecond
+100000000069***57 millisecond
+100000000073***58 millisecond
+100000000091***57 millisecond
+100000000103***58 millisecond
+100000000129***56 millisecond
+NIL
+
+CL-USER 58 >  (search-primes-under170 (expt 10 12))
+
+1000000000039***199 millisecond
+1000000000061***185 millisecond
+1000000000063***184 millisecond
+1000000000091***186 millisecond
+1000000000121***185 millisecond
+1000000000163***183 millisecond
+1000000000169***184 millisecond
+NIL
+
+CL-USER 59 >  (search-primes-under170 (expt 10 13))
+
+10000000000037***622 millisecond
+10000000000051***607 millisecond
+10000000000099***589 millisecond
+10000000000129***588 millisecond
+NIL
+CL-USER 60 > (search-primes-under170 (expt 10 14))
+
+100000000000031***1919 millisecond
+100000000000067***1867 millisecond
+100000000000097***1868 millisecond
+100000000000099***1869 millisecond
+100000000000133***1880 millisecond
+100000000000139***1864 millisecond
+100000000000169***1864 millisecond
+NIL
+
+CL-USER 65 >  (search-primes-under170 (expt 10 15))
+
+1000000000000037***5928 millisecond
+1000000000000091***5989 millisecond
+1000000000000159***5975 millisecond
+NIL
+
+Each time that user-defined operation is called, an extra if must be evaluated (to check if the input is 2).
+Other than this small discrepancy, I think the improvement is quite good for such a small change to the code.
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
