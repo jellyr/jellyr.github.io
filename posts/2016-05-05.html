@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.24</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.24
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+	
+(defun squre(x)
+  (* x x))
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+
+(defun doublef(x)
+  (+ x x))
+
+
+(defun half(x)
+  (/ x 2))
+
+
+
+(defun smallest-divisor (n)
+  (find-divisor n 2))
+
+(defun nxt (x)
+  ( if(= x 2) 
+      3
+     (+ x 2)))
+
+(defun find-divisor(n test-divisor)
+  (cond ((> (squre test-divisor) n) n )
+	(( divides? test-divisor n) test-divisor)
+	( (find-divisor n (nxt test-divisor)))))
+
+
+(defun divides? (a b)
+  (= (mod b a) 0))
+
+
+(defun prime? (n)
+    (= n (smallest-divisor n)))
+
+
+
+
+
+(defun  expmod (base exp m)
+  (cond ((= exp 0) 1)
+	((even? exp)  (mod (squre (expmod base (/ exp 2) m))
+			   m))
+	( (mod (* base (expmod base (- exp 1) m))
+	       m))))
+
+(defun try-it (a n)
+      (= (expmod a n n) a))
+
+(defun fermat-test(n)
+ 
+  (try-it (+ 1 (random (- n 1))) n))
+
+
+(defun fast-prime? (n times)
+  (cond ( (= times 0) t)
+	( (fermat-test n) (fast-prime? n (- times 1)))
+	( nil)))
+
+
+
+
+(defun search-for-primes (start  end use-fast-prime?)
+  ( if(even? start)
+      (search-for-primes (+ start 1) end use-fast-prime?)
+      (cond ( (< start end) (timed-prime-test start use-fast-prime?)
+	      (search-for-primes (+ start 2) end use-fast-prime?)))))
+
+
+
+(defun timed-prime-test(n use-fast-prime?)
+   (start-prime-test n (get-internal-real-time) use-fast-prime?))
+
+
+(defun start-prime-test(n start-time use-fast-prime?)
+(if use-fast-prime? 
+  (cond ( (fast-prime? n 250000) (report-prime n (- (get-internal-real-time) start-time))))
+  (cond ( (prime? n ) (report-prime n (- (get-internal-real-time) start-time))))))
+
+
+(defun report-prime (n elapsed-time)
+  (format t "~%~d***~d millisecond" n  elapsed-time))
+
+
+(defun search-primes-under170 (start use-fast-prime?)
+  (search-for-primes start (+ start 200) use-fast-prime?))
+
+
+
+
+CL-USER 84 >  (search-primes-under170 (expt 10 3) t)
+
+1009***389 millisecond
+1013***393 millisecond
+1019***408 millisecond
+1021***407 millisecond
+1031***345 millisecond
+1033***326 millisecond
+1039***363 millisecond
+1049***347 millisecond
+1051***363 millisecond
+1061***344 millisecond
+1063***364 millisecond
+1069***363 millisecond
+1087***397 millisecond
+1091***344 millisecond
+1093***346 millisecond
+1097***342 millisecond
+1103***382 millisecond
+1105***351 millisecond
+1109***363 millisecond
+1117***387 millisecond
+1123***376 millisecond
+1129***368 millisecond
+1151***415 millisecond
+1153***339 millisecond
+1163***367 millisecond
+1171***357 millisecond
+1181***388 millisecond
+1187***370 millisecond
+1193***360 millisecond
+NIL
+log2(10^3) = 9.965
+
+
+CL-USER 85 >  (search-primes-under170 (expt 10 4) t)
+
+10007***517 millisecond
+10009***473 millisecond
+10037***494 millisecond
+10039***507 millisecond
+10061***493 millisecond
+10067***497 millisecond
+10069***492 millisecond
+10079***527 millisecond
+10091***510 millisecond
+10093***506 millisecond
+10099***514 millisecond
+10103***527 millisecond
+10111***547 millisecond
+10133***491 millisecond
+10139***512 millisecond
+10141***511 millisecond
+10151***516 millisecond
+10159***532 millisecond
+10163***511 millisecond
+10169***514 millisecond
+10177***475 millisecond
+10181***493 millisecond
+10193***498 millisecond
+NIL
+log2(10^4) 13.288
+
+13.288/9.965 = 1.333 is the expected ratio
+517/389      = 1.329 is the actual   ratio
+
+CL-USER 86 >  (search-primes-under170 (expt 10 5) t)
+
+100003***1328 millisecond
+100019***1351 millisecond
+100043***1357 millisecond
+100049***1294 millisecond
+100057***1342 millisecond
+100069***1346 millisecond
+100103***1300 millisecond
+100109***1292 millisecond
+100129***1237 millisecond
+100151***1397 millisecond
+100153***1339 millisecond
+100169***1307 millisecond
+100183***1409 millisecond
+100189***1395 millisecond
+100193***1296 millisecond
+NIL
+log2(10^5)=16.610
+
+
+16.610/13.288 = 1.25 is the expected ratio
+1328  /517    = 2.56 is the actual   ratio
+
+
+CL-USER 87 >  (search-primes-under170 (expt 10 6) t)
+
+1000003***2058 millisecond
+1000033***2025 millisecond
+1000037***2123 millisecond
+1000039***2202 millisecond
+1000081***2028 millisecond
+1000099***2116 millisecond
+1000117***2183 millisecond
+1000121***2190 millisecond
+1000133***2131 millisecond
+1000151***2279 millisecond
+1000159***2366 millisecond
+1000171***2286 millisecond
+1000183***2354 millisecond
+1000187***2354 millisecond
+1000193***1959 millisecond
+1000199***2144 millisecond
+NIL
+log2(10^6)=19.932
+
+19.932/16.610 = 1.2  is the expected ratio
+2058  /1328   = 1.54 is the actual   ratio
+
+
+
+For the first three primes above 10,000 the ratio seems to be about right. 
+But for 100,000 and 1,000,000 the ratios are much higher than expected. 
+Why would this be?
+
+A hint at an answer is perhaps given in the footnote to section 1.2.3:
+
+"...if we count process steps as "machine operations" we are making the 
+assumption that the number of machine operations needed to perform, say, 
+a multiplication is independent of the size of the numbers to be multiplied, 
+which is false if the numbers are sufficiently large."
+
+quote: http://jots-jottings.blogspot.jp/2011/09/sicp-124-faster-prime-time.html
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
