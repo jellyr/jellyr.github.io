@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.25</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.25
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+	
+Exercise 1.25 asks us to take a closer look at the expmod procedure 
+that we used in exercise 1.24 to compute the exponential of a number 
+modulo another number:
+(define (expmod base exp m)
+   (cond ((= exp 0) 1)
+         ((even? exp)
+          (remainder (square (expmod base (/ exp 2) m))
+                     m))
+         (else
+          (remainder (* base (expmod base (- exp 1) m))
+                     m))))
+
+We're asked to consider a more straightforward implementation of the same 
+function. This version makes use of the fast-expt procedure from section 1.2.4, 
+which I've also included here.
+(define (expmod base exp m)
+   (remainder (fast-expt base exp) m))
+
+(define (fast-expt b n)
+   (cond ((= n 0) 1)
+         ((even? n) (square (fast-expt b (/ n 2))))
+         (else (* b (fast-expt b (- n 1))))))
+
+Will this version perform just as well in the fast prime tester from exercise 1.24? 
+The easiest way to answer that question is to drop it in and test it out. Starting 
+out with relatively small values, you can see that the new procedure doesn't perform very well at all.
+> (timed-prime-test 1999)
+
+1999 *** 138.0
+> (timed-prime-test 10007)
+
+10007 *** 681.0
+> (timed-prime-test 100003)
+
+100003 *** 29059.0
+
+These values are several orders of magnitude smaller than those used in the previous exercise, 
+but the new procedure is taking a much longer time to complete. Why is that?
+
+The answer is buried in a footnote to the expmod code (#46).
+The reduction steps in the cases where the exponent e is greater than 1 are based on the fact that, 
+for any integers x, y, and m, we can find the remainder of x times y modulo m by computing separately 
+the remainders of x modulo m and y modulo m, multiplying these, and then taking the remainder of the result modulo m. 
+For instance, in the case where e is even, we compute the remainder of be/2 modulo m, square this, 
+and take the remainder modulo m. This technique is useful because it means we can perform our computation
+without ever having to deal with numbers much larger than m.
+
+The important point is that the original expmod procedure uses successive squaring to perform its 
+computations without ever having to deal with numbers larger than m. Simple arithmetic with very large 
+numbers is much slower than arithmetic with 32-bit integers. That's because the time complexity for arithmetic 
+operations is based on the number of bits in the operands. The intermediate results during computation in the fast-expt 
+procedure get very big, very quickly (the final result is growing exponentially, after all). Since we're only interested 
+in the remainder, modular arithmetic provides a much sleeker solution, as explained in the footnote.
+
+quote: http://www.billthelizard.com/2010/02/sicp-exercise-125-closer-look-at-expmod.html
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit in Emacs with Slime and Steel Bank Common Lisp.
+</font>
+
+
+</body>
+
+
+</html>
