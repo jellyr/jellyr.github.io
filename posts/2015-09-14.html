@@ -41,7 +41,7 @@
         {    
 
 					  float normalizedX = (gl_FragCoord.x - 400.0)/25.0;
-						float normalizedY = (gl_FragCoord.y - 200.0)/25.0;
+						float normalizedY = (gl_FragCoord.y - 100.0)/25.0;
 						
 						if(   (sin(normalizedX+iGlobalTime*4.0)   )> normalizedY/2.0-0.10  && //0.10 表示线条 * 25后的宽度         2.0 表示y轴拉升多少
 				        (sin(normalizedX+iGlobalTime*4.0)  )< normalizedY/2.0+0.10 
