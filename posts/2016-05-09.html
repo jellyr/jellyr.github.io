@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.28</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.28
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+Exercise 1.28. One variant of the Fermat test that cannot be fooled is called the Miller-Rabin test
+(Miller 1976; Rabin 1980). This starts from an alternate form of Fermat's Little Theorem, which
+states that if n is a prime number and a is any positive integer less than n, then a raised to the (n -
+1)st power is congruent to 1 modulo n. To test the primality of a number n by the Miller-Rabin test,
+we pick a random number a<n and raise a to the (n - 1)st power modulo n using the expmod
+procedure. However, whenever we perform the squaring step in expmod, we check to see if we
+have discovered a ``nontrivial square root of 1 modulo n,'' that is, a number not equal to 1 or n - 1
+whose square is equal to 1 modulo n. It is possible to prove that if such a nontrivial square root of 1
+exists, then n is not prime. It is also possible to prove that if n is an odd number that is not prime,
+then, for at least half the numbers a<n, computing an-1 in this way will reveal a nontrivial square
+root of 1 modulo n. (This is why the Miller-Rabin test cannot be fooled.) Modify the expmod
+procedure to signal if it discovers a nontrivial square root of 1, and use this to implement the MillerRabin 
+test with a procedure analogous to fermat-test. Check your procedure by testing various
+known primes and non-primes. Hint: One convenient way to make expmod signal is to have it
+return 0.
+
+(defun square(x)
+  (* x x))
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+(defun non-trivial-sqrt? (x n)
+  (and (not (= x 1))
+       (not (= x (- n 1)))
+       (= (mod (square x) n) 1)))
+
+
+
+(defun zero-if-non-trivial-sqrt(x n)
+  (if (non-trivial-sqrt? x n) 0 x))
+
+
+
+(defun mrt-expmod (base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp) (mod
+                       (square
+                         (zero-if-non-trivial-sqrt
+                           (mrt-expmod base (/ exp 2) m) m)) m))
+        ( (mod (* base (mrt-expmod base (- exp 1) m)) m))))
+
+
+
+
+(defun miller-rabin-test-all (n)
+  (defun try-it (a)
+    (cond ((= a n) t)
+          ((= (mrt-expmod a (- n 1) n) 1) (try-it (+ a 1)))
+          (nil)))
+  (try-it 1))
+  
+  
+  
+  CL-USER 138 >  (miller-rabin-test-all 561)
+ 
+NIL
+
+CL-USER 139 >  (miller-rabin-test-all 1105)
+ 
+NIL
+
+CL-USER 140 >  (miller-rabin-test-all 1729)
+ 
+NIL
+
+CL-USER 141 >  (miller-rabin-test-all 2465)
+ 
+NIL
+
+CL-USER 142 >  (miller-rabin-test-all 2821)
+ 
+NIL
+
+CL-USER 143 >  (miller-rabin-test-all 6601)
+ 
+NIL
+
+CL-USER 144 >  (miller-rabin-test-all 1)
+ 
+T
+
+CL-USER 145 >  (miller-rabin-test-all 2)
+ 
+T
+
+CL-USER 146 >  (miller-rabin-test-all 3)
+ 
+T
+
+CL-USER 147 >  (miller-rabin-test-all 4)
+ 
+NIL
+
+CL-USER 148 >  (miller-rabin-test-all 5)
+ 
+T
+
+CL-USER 149 >  (miller-rabin-test-all 6)
+ 
+NIL
+
+CL-USER 150 >  (miller-rabin-test-all 7)
+ 
+T
+
+CL-USER 151 >  (miller-rabin-test-all 8)
+ 
+NIL
+
+CL-USER 152 >  (miller-rabin-test-all 9)
+ 
+NIL
+
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit and test in LispWorks 7.0.0  Professional edition.
+</font>
+
+
+</body>
+
+
+</html>
