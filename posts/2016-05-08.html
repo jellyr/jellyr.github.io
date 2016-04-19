@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scip1.27</title>
+</head>
+
+<body>
+	
+	
+	
+<font size="4" color=#C63D0F>
+SCIP 1.27
+</font>
+
+
+<pre class="html" name="colorcode">
+<font size="4" color=#118C4E>
+Exercise 1.27 asks us to demonstrate that the first six Carmicheal numbers (561, 1105, 1729, 2465, 2821, and 6601) really do fool the Fermat test. 
+We're to write a procedure that takes an integer n and tests whether an is congruent to a modulo n for every value less than n, 
+then test the procedure on each of the Carmichael numbers listed.
+
+(defun squre(x)
+  (* x x))
+
+
+(defun even?(x)
+  (= (mod x 2) 0))
+
+
+(defun doublef(x)
+  (+ x x))
+
+
+(defun half(x)
+  (/ x 2))
+
+
+
+(defun smallest-divisor (n)
+  (find-divisor n 2))
+
+(defun nxt (x)
+  ( if(= x 2) 
+      3
+     (+ x 2)))
+
+(defun find-divisor(n test-divisor)
+  (cond ((> (squre test-divisor) n) n )
+	(( divides? test-divisor n) test-divisor)
+	( (find-divisor n (nxt test-divisor)))))
+
+
+(defun divides? (a b)
+  (= (mod b a) 0))
+
+
+(defun prime? (n)
+    (= n (smallest-divisor n)))
+
+
+
+
+
+(defun  expmod (base exp m)
+  (cond ((= exp 0) 1)
+	((even? exp)  (mod (squre (expmod base (/ exp 2) m))
+			   m))
+	( (mod (* base (expmod base (- exp 1) m))
+	       m))))
+
+(defun try-it (a n)
+      (= (expmod a n n) a))
+
+
+(defun fermat-full-test-iter(start n)
+  ( cond ( (= start (- n 1)) t)
+         ( (try-it start n) (fermat-full-test-iter (+ start 1) n))
+         ( nil)))
+
+(defun fermat-full-test(n)
+  (fermat-full-test-iter 1 n))
+
+
+(defun fermat-test(n)
+  (try-it (+ 1 (random (- n 1))) n))
+
+
+(defun fast-prime? (n times)
+  (cond ( (= times 0) t)
+	( (fermat-test n) (fast-prime? n (- times 1)))
+	( nil)))
+
+
+
+
+(defun search-for-primes (start  end use-fast-prime?)
+  ( if(even? start)
+      (search-for-primes (+ start 1) end use-fast-prime?)
+      (cond ( (< start end) (timed-prime-test start use-fast-prime?)
+	      (search-for-primes (+ start 2) end use-fast-prime?)))))
+
+
+
+(defun timed-prime-test(n use-fast-prime?)
+   (start-prime-test n (get-internal-real-time) use-fast-prime?))
+
+
+(defun start-prime-test(n start-time use-fast-prime?)
+(if use-fast-prime? 
+  (cond ( (fast-prime? n 250000) (report-prime n (- (get-internal-real-time) start-time))))
+  (cond ( (prime? n ) (report-prime n (- (get-internal-real-time) start-time))))))
+
+
+(defun report-prime (n elapsed-time)
+  (format t "~%~d***~d millisecond" n  elapsed-time))
+
+
+(defun search-primes-under170 (start use-fast-prime?)
+  (search-for-primes start (+ start 200) use-fast-prime?))
+
+
+CL-USER 127 > (fermat-full-test 561)
+T
+
+CL-USER 128 > (fermat-full-test 1105)
+T
+
+CL-USER 129 > (fermat-full-test 1729)
+T
+
+CL-USER 130 > (fermat-full-test 2465)
+T
+
+CL-USER 131 > (fermat-full-test 2821)
+T
+
+CL-USER 132 > (fermat-full-test 6601)
+T
+
+CL-USER 133 > (fermat-full-test 6602)
+NIL
+
+
+</font>  
+</pre>
+
+
+
+
+<font size="4" color=#800080>
+Edit and test in LispWorks 7.0.0  Professional edition.
+</font>
+
+
+</body>
+
+
+</html>
